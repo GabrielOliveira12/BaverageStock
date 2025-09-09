@@ -1,2 +1,48 @@
+# Arquivos de ambiente
 .env
+.env.local
+.env.production
+.env.staging
+
+# Dependências do Composer
+backend/vendor/
+backend/composer.lock
+
+# Logs do PHP e aplicação
+backend/logs/
+backend/storage/logs/
+*.log
+
+# Cache e arquivos temporários
+backend/cache/
+backend/tmp/
+backend/storage/cache/
+backend/storage/tmp/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Docker
+docker-compose.override.yml
+
+# Dados do banco de dados
+mysql/data/
+mysql/logs/
+
+# Arquivos de backup
+*.sql.backup
+*.dump
+
+# Node modules (se usar frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Outros
 .MD
