@@ -1,0 +1,55 @@
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: stock_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+      - ./backend/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - stock_network
+    depends_on:
+      - db
+
+  webserver:
+    image: nginx:alpine
+    container_name: stock_webserver
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    volumes:
+      - ./backend:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - stock_network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: stock_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306"
+    networks:
+      - stock_network
+
+    
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  stock_network:
+    driver: bridge
