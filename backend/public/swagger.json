@@ -1,0 +1,356 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Beverage Stock API",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de estoque de bebidas"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8082",
+      "description": "Servidor local"
+    }
+  ],
+  "tags": [
+    {
+      "name": "sections",
+      "description": "Operações relacionadas às seções"
+    },
+    {
+      "name": "beverage-types",
+      "description": "Operações relacionadas aos tipos de bebida"
+    },
+    {
+      "name": "beverages",
+      "description": "Operações relacionadas às bebidas"
+    },
+    {
+      "name": "history",
+      "description": "Operações relacionadas ao histórico"
+    }
+  ],
+  "paths": {
+    "/sections": {
+      "get": {
+        "tags": ["sections"],
+        "summary": "Listar todas as seções",
+        "responses": {
+          "200": {
+            "description": "Lista de seções"
+          }
+        }
+      },
+      "post": {
+        "tags": ["sections"],
+        "summary": "Criar nova seção",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "type", "max_capacity"],
+                "properties": {
+                  "name": { "type": "string", "example": "Seção Teste" },
+                  "type": { "type": "string", "enum": ["alcoholic", "non_alcoholic"] },
+                  "max_capacity": { "type": "number", "example": 500000 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Seção criada" }
+        }
+      }
+    },
+    "/sections/{id}": {
+      "get": {
+        "tags": ["sections"],
+        "summary": "Buscar seção por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Seção encontrada" }
+        }
+      },
+      "put": {
+        "tags": ["sections"],
+        "summary": "Atualizar seção",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "type": { "type": "string", "enum": ["alcoholic", "non_alcoholic"] },
+                  "max_capacity": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Seção atualizada" }
+        }
+      },
+      "delete": {
+        "tags": ["sections"],
+        "summary": "Deletar seção",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Seção deletada" }
+        }
+      }
+    },
+    "/beverage-types": {
+      "get": {
+        "tags": ["beverage-types"],
+        "summary": "Listar tipos de bebida",
+        "responses": {
+          "200": { "description": "Lista de tipos" }
+        }
+      },
+      "post": {
+        "tags": ["beverage-types"],
+        "summary": "Criar tipo de bebida",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "section_id"],
+                "properties": {
+                  "name": { "type": "string", "example": "Whisky" },
+                  "section_id": { "type": "integer", "example": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tipo criado" }
+        }
+      }
+    },
+    "/beverage-types/{id}": {
+      "get": {
+        "tags": ["beverage-types"],
+        "summary": "Buscar tipo por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Tipo encontrado" }
+        }
+      },
+      "put": {
+        "tags": ["beverage-types"],
+        "summary": "Atualizar tipo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "section_id": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tipo atualizado" }
+        }
+      },
+      "delete": {
+        "tags": ["beverage-types"],
+        "summary": "Deletar tipo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Tipo deletado" }
+        }
+      }
+    },
+    "/beverages": {
+      "get": {
+        "tags": ["beverages"],
+        "summary": "Listar bebidas",
+        "responses": {
+          "200": { "description": "Lista de bebidas" }
+        }
+      },
+      "post": {
+        "tags": ["beverages"],
+        "summary": "Criar bebida",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "brand", "volume_per_unit", "quantity", "section_id", "beverage_type_id"],
+                "properties": {
+                  "name": { "type": "string", "example": "Coca-Cola" },
+                  "brand": { "type": "string", "example": "Coca-Cola" },
+                  "volume_per_unit": { "type": "number", "example": 500 },
+                  "quantity": { "type": "integer", "example": 24 },
+                  "section_id": { "type": "integer", "example": 2 },
+                  "beverage_type_id": { "type": "integer", "example": 5 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Bebida criada" }
+        }
+      }
+    },
+    "/beverages/{id}": {
+      "get": {
+        "tags": ["beverages"],
+        "summary": "Buscar bebida por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Bebida encontrada" }
+        }
+      },
+      "put": {
+        "tags": ["beverages"],
+        "summary": "Atualizar bebida",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "brand": { "type": "string" },
+                  "volume_per_unit": { "type": "number" },
+                  "quantity": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Bebida atualizada" }
+        }
+      },
+      "delete": {
+        "tags": ["beverages"],
+        "summary": "Deletar bebida",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Bebida deletada" }
+        }
+      }
+    },
+    "/history": {
+      "get": {
+        "tags": ["history"],
+        "summary": "Consultar histórico",
+        "responses": {
+          "200": { "description": "Lista do histórico" }
+        }
+      },
+      "post": {
+        "tags": ["history"],
+        "summary": "Registrar operação",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["operation_type", "beverage_id", "section_id", "beverage_type_id", "quantity", "volume", "responsible"],
+                "properties": {
+                  "operation_type": { "type": "string", "enum": ["entry", "exit"] },
+                  "beverage_id": { "type": "integer" },
+                  "section_id": { "type": "integer" },
+                  "beverage_type_id": { "type": "integer" },
+                  "quantity": { "type": "integer" },
+                  "volume": { "type": "number" },
+                  "responsible": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Operação registrada" }
+        }
+      }
+    }
+  }
+}

@@ -14,10 +14,10 @@ class DatabaseConfig
 
     public function __construct()
     {
-        $this->host = $_ENV['DB_HOST'];
-        $this->dbName = $_ENV['DB_DATABASE'];
-        $this->username = $_ENV['DB_USERNAME'];
-        $this->password = $_ENV['DB_PASSWORD'];
+        $this->host = $_ENV['DB_HOST'] ?? 'db';
+        $this->dbName = $_ENV['DB_DATABASE'] ?? 'stock';
+        $this->username = $_ENV['DB_USERNAME'] ?? 'admin';
+        $this->password = $_ENV['DB_PASSWORD'] ?? 'admin';
     }
 
     public function getConnection(): ?PDO
@@ -31,7 +31,6 @@ class DatabaseConfig
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             
-            // Definir charset UTF-8 para a conexão
             $this->connection->exec("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
             $this->connection->exec("SET CHARACTER SET utf8mb4");
         } catch (PDOException $e) {
